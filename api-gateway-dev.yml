@@ -17,7 +17,8 @@ spring:
 
   data:
     redis:
-      host: localhost:6371
+      host: localhost
+      port: 6371
 
   cloud:
     gateway:
@@ -31,7 +32,7 @@ spring:
         - id: account-service
           uri: lb://ACCOUNT-SERVICE
           predicates:
-            - path=/api/account/**
+            - Path=/api/account/**
           filters:
             - StripPrefix=1
 
@@ -44,25 +45,25 @@ spring:
             - name: CircuitBreaker
               args:
                 name: transactionCB
-                
-       - id: auth-service
-         uri: lb://AUTH-SERVICE
-         predicates:
-           - Path=/auth**,/oauth2/**
-         filters:
-           - StripPrefix=1
-           
-      - id: customer-service
-         uri: lb://CUSTOMER-SERVICE
-         predicates:
-           - Path=/api/customers/**
-         filters:
-           - StripPrefix=1
+
+        - id: auth-service
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/**,/oauth2/**
+          filters:
+            - StripPrefix=1
+
+        - id: customer-service
+          uri: lb://CUSTOMER-SERVICE
+          predicates:
+            - Path=/api/customers/**
+          filters:
+            - StripPrefix=1
 
 eureka:
   client:
     service-url:
-      defaultzone: http://localhost:8761/eureka
+      defaultZone: http://localhost:8761/eureka/
 
 management:
   endpoints:
